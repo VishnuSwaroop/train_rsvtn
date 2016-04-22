@@ -35,7 +35,7 @@ class login_page:
         self.db = MySQLdb.connect(host="localhost",    # your host, usually localhost
                              user="root",         # your username
                              passwd=self.password1,  # your password
-                             db="cs4400_Team_45")        # name of the data base
+                             db="trainsystem")        # name of the data base
         
         
         

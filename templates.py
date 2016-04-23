@@ -94,3 +94,9 @@ SCHOOL_PAGE = """\
     </form>
 </html>
 """
+
+SEARCH_TRAIN_PAGE = """\
+<body bgcolor="#ffc34d">
+<h2 align="center">Seach Train</h2>
+
+"""

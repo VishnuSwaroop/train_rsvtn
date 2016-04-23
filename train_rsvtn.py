@@ -31,6 +31,7 @@ from menu import *
 #HTML page templates
 from train_schedule import *
 from school_info import *
+from make_reserve import *
 class login_page(webapp2.RequestHandler): 
  
     def get(self):
@@ -104,14 +105,15 @@ app = webapp2.WSGIApplication([
     ('/register',registration_page),
     ('/menu',customer_menu_page),
     ('/viewschedule',train_schedule1),
-    # ('/makereserve',customer_menu_page),
+    ('/makereserve',make_reservation),
     # ('/updatereserve',customer_menu_page),
     # ('/cancelreserve',customer_menu_page),
     # ('/givereview',customer_menu_page),
-    ('/addschool',school_info_page)
-    # ('/menu',customer_menu_page),
-    # ('/menu',customer_menu_page),
-    # ('/menu',customer_menu_page)
+    ('/addschool',school_info_page),
+    ('/selectdep',sel_dep_page),
+    ('/pngr_info',pngr_info),
+    ('/finalreserve',finalreserve),
+    ('/paymentinfo',paymentinfo)
 
     
 ], debug=True)

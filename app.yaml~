@@ -1,0 +1,13 @@
+application: vishnu
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /.*
+  script:train_rsvtn.app
+
+libraries:
+- name: webapp2
+  version: latest

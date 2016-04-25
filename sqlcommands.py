@@ -92,3 +92,81 @@ statement41="SELECT IF(R.Class='First Class',(SELECT T.Class1Price FROM Train_Ro
 
 #bags,psngrname
 statement42="SELECT No_Bags, PassengerName FROM Reserves WHERE Reservation_ID='%s'"
+
+
+#Update a reservation2
+#dropdown
+# statement43="SELECT R.Reservation_ID FROM Reservation AS R WHERE R.Username='%s' AND R.IsCancelled != '1'"
+
+#to get train no-already known
+#statement44="SELECT R.Train_No FROM Reserves AS R WHERE R.Reservation_ID='%s'"
+#duration
+statement43="SELECT p3.Duration FROM (SELECT p1.Train_No, TIMEDIFF(p1.Arrival_Time,p2.Depart_Time) AS Duration,p1.Name  FROM (SELECT S1.Train_No,S1.Arrival_Time,S1.Name FROM Stop AS S1 LEFT JOIN Stop AS S2 ON (S1.Train_No=S2.Train_No AND S1.Arrival_Time<S2.Arrival_Time) WHERE S2.Depart_Time IS NULL)AS p1 JOIN  (SELECT Stop.Train_No, Stop.Depart_Time FROM Stop WHERE Stop.Depart_Time IN (SELECT min(Stop.Depart_Time) FROM Stop GROUP BY Stop.Train_No))AS p2  ON p1.Train_No=p2.Train_No) AS p3 WHERE p3.Train_No IN (SELECT Train_No FROM Reserves WHERE Reservation_ID='%s') AND p3.Train_No='%s'  "
+#departsfrom, arrives at, class:
+statement44="SELECT Departs_From, Arrives_At, Class FROM Reserves WHERE Reservation_ID='%s' AND Train_No='%s' "
+#price
+statement45="SELECT IF(R.Class='First Class',(SELECT T.Class1Price FROM Train_Route AS T WHERE T.Train_No=R.Train_No),(SELECT T.Class2Price FROM Train_Route AS T WHERE T.Train_No=R.Train_No)) AS Price FROM Reserves AS R WHERE Reservation_ID='%s' AND Train_No='%s' "
+
+#bags,psngrname
+statement46="SELECT No_Bags, PassengerName FROM Reserves WHERE Reservation_ID='%s' AND Train_No='%s'"
+
+#depdate to check for limmit
+statement47="SELECT DATE_SUB(DepDate,INTERVAL 1 DAY) FROM Reserves WHERE Reservation_ID='%s' AND Train_No='%s' "
+
+statement48="UPDATE Reserves SET DepDate ='%s' WHERE Reservation_ID='%s' AND Train_No='%s'"
+
+
+
+#change fee
+statement49="SELECT ChangeFee FROM System_Info"
+
+
+#Cancel reservation
+#dropdown
+statement50="SELECT R.Reservation_ID FROM Reservation AS R WHERE R.Username='%s' AND R.IsCancelled != '1' "
+#trainno
+statement51="SELECT R.Train_No FROM Reserves AS R WHERE R.Reservation_ID='%s' "
+#duration
+statement52="SELECT p3.Duration FROM (SELECT p1.Train_No, TIMEDIFF(p1.Arrival_Time,p2.Depart_Time) AS Duration,p1.Name  FROM (SELECT S1.Train_No,S1.Arrival_Time,S1.Name FROM Stop AS S1 LEFT JOIN Stop AS S2 ON (S1.Train_No=S2.Train_No AND S1.Arrival_Time<S2.Arrival_Time) WHERE S2.Depart_Time IS NULL)AS p1 JOIN  (SELECT Stop.Train_No, Stop.Depart_Time FROM Stop WHERE Stop.Depart_Time IN (SELECT min(Stop.Depart_Time) FROM Stop GROUP BY Stop.Train_No))AS p2  ON p1.Train_No=p2.Train_No) AS p3 WHERE p3.Train_No IN (SELECT Train_No FROM Reserves WHERE Reservation_ID='%s') "
+
+#departs from, price,
+statement53="SELECT Departs_From, Arrives_At, Class FROM Reserves WHERE Reservation_ID='%s' "
+
+#bags and passenger info
+statement54="SELECT No_Bags, PassengerName FROM Reserves WHERE Reservation_ID='%s'"
+
+
+#canceldifference, if NULL, no reservation
+
+statement55="SELECT DATEDIFF((SELECT R1.DepDate FROM Reserves AS R1 LEFT JOIN Reserves R2 ON R1.Reservation_ID = R2.Reservation_ID AND R1.DepDate > R2.DepDate WHERE R2.DepDate IS NULL AND R1.Reservation_ID='%s'),CURDATE()) "
+
+
+#cancel reservation
+statement56="UPDATE Reservation SET IsCancelled='1'WHERE Reservation_ID='%s'"
+
+#REVIEW
+statement57="SELECT Train_No FROM Train_Route "
+
+statement58="SELECT Rating,COUNT(Review_No) AS 'No. of Reviews',(SELECT IF(MAX(Comment)IS NULL,' ',MAX(Comment))) AS Comment FROM Review WHERE Train_No = '%s' GROUP BY Rating,Train_No"
+
+#give review
+statement59="INSERT INTO Review (Train_No,Rating,Comment,Username) VALUES ('%s','%s','%s','%s')"
+
+statement60="INSERT INTO Review (Train_No,Rating,Comment,Username) VALUES ('%s','%s','%s','%s') "
+
+
+#Manager
+statement61="SELECT MONTHNAME(STR_TO_DATE((SELECT MONTH(DepDate)), '%m')) AS Month,SUM(X.Price) AS Revenue FROM ( SELECT Reservation_ID,DepDate,(SELECT IF(R.Class='First Class',(SELECT T.Class1Price FROM Train_Route AS T WHERE T.Train_No=R.Train_No),(SELECT T.Class2Price FROM Train_Route AS T WHERE T.Train_No=R.Train_No))) AS Price FROM Reserves AS R ) AS X JOIN Reservation AS S ON X.Reservation_ID=S.Reservation_ID WHERE MONTH(X.DepDate)<MONTH(CURDATE()) AND S.IsCancelled ='0' GROUP BY MONTH(X.DepDate) "
+
+
+statement62="CREATE OR REPLACE VIEW X1 AS SELECT MONTHNAME(STR_TO_DATE((SELECT MONTH(R.DepDate)), '%m')) AS Month,R.Train_No,COUNT(R.Reservation_ID) AS 'No. of Reservations' FROM Reserves AS R JOIN Reservation AS S ON R.Reservation_ID=S.Reservation_ID WHERE MONTH(R.DepDate)='1' AND S.IsCancelled ='0' GROUP BY MONTH(R.DepDate),R.Train_No"
+
+statement63="CREATE OR REPLACE VIEW X2 AS SELECT MONTHNAME(STR_TO_DATE((SELECT MONTH(R.DepDate)), '%m')) AS Month,R.Train_No,COUNT(R.Reservation_ID) AS 'No. of Reservations' FROM Reserves AS R JOIN Reservation AS S ON R.Reservation_ID=S.Reservation_ID WHERE MONTH(R.DepDate)='2' AND S.IsCancelled ='0' GROUP BY MONTH(R.DepDate),R.Train_No "
+
+statement64="CREATE OR REPLACE VIEW X3 AS SELECT MONTHNAME(STR_TO_DATE((SELECT MONTH(R.DepDate)), '%m')) AS Month,R.Train_No,COUNT(R.Reservation_ID) AS 'No. of Reservations' FROM Reserves AS R JOIN Reservation AS S ON R.Reservation_ID=S.Reservation_ID WHERE MONTH(R.DepDate)='3' AND S.IsCancelled ='0' GROUP BY MONTH(R.DepDate),R.Train_No "
+
+statement65="SELECT * FROM X1 ORDER BY 'No. of Reservations' DESC LIMIT 3 "
+
+statement66="SELECT * FROM X2 ORDER BY 'No. of Reservations' DESC LIMIT 3 "
+
+statement67="SELECT * FROM X3 ORDER BY 'No. of Reservations' DESC LIMIT 3 "

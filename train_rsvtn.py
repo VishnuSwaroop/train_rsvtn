@@ -17,14 +17,14 @@ from update import *
 
 import urllib
 import time
-
+from review import *
 import random
 import json
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from google.appengine.ext import db
 from google.appengine.api import search
-
+from cancel import *
 from templates import *
 import webapp2
 from reg_page import *
@@ -33,6 +33,7 @@ from menu import *
 from train_schedule import *
 from school_info import *
 from make_reserve import *
+from manager import *
 class login_page(webapp2.RequestHandler): 
  
     def get(self):
@@ -90,7 +91,8 @@ class login_page(webapp2.RequestHandler):
                 self.response.write('<meta http-equiv="refresh" content="0; url=/menu" />')
                 
             elif result2:
-                self.response.write('<p><h1><font color="red">Login Successful ! Welcome Manager</font>  </h1></p>')
+                self.response.write('<meta http-equiv="refresh" content="0; url=/manager_menu" />')
+                
 
             return
             
@@ -109,14 +111,26 @@ app = webapp2.WSGIApplication([
     ('/makereserve',make_reservation),
     ('/updatereserve',updatereserve),
     ('/updatereserve2',updatereserve2),
-    # ('/cancelreserve',customer_menu_page),
-    # ('/givereview',customer_menu_page),
+    ('/updatereserve3',updatereserve3),
+    ('/updateconf',updateconf),
+    ('/cancelreserve',cancelreserve),
+    ('/cancelreserve2',cancelreserve2),
+    
+    ('/cancelconf',cancelconf),
+    #('/givereview',give_review),
+    ('/viewreview',view_review),
+    ('/viewreview2',view_review2),
+    ('/givereview',give_review),
+    ('/givereview2',give_review2),
     ('/addschool',school_info_page),
     ('/selectdep',sel_dep_page),
     ('/pngr_info',pngr_info),
     ('/finalreserve',finalreserve),
     ('/paymentinfo',paymentinfo),
-    ('/confirmation', confirmation)
+    ('/confirmation',confirmation),
+    ('/manager_menu', manager_menu),
+    ('/revenue', revenue),
+    ('/pop_route', pop_route)
 
     
 ], debug=True)

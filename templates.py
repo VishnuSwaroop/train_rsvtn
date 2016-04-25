@@ -4,7 +4,7 @@ ALL_PAGE_HEADER = """\
 <h1 align="center"><font color="993300">GT Train Reservation System</font></h1>
 <p></p>
 <h2 align="center">Team 45</h2>
-<a href=/> <h3 align="left"> HOME </h3> </a>
+<a href=/> <h3 align="left"> Home </h3> </a>
 <hr>
 <hr>
 </html>
@@ -60,6 +60,8 @@ MENU_PAGE = """\
 <p></p>
 <li> <a href=/cancelreserve> <h3>Cancel a reservation </h3></a>
 <p></p>
+<li> <a href=/viewreview> <h3>View review </h3></a>
+<p></p>
 <li> <a href=/givereview> <h3>Give review </h3></a>
 <p></p>
 <li> <a href=/addschool> <h3>Add school info </h3></a>
@@ -99,4 +101,15 @@ SEARCH_TRAIN_PAGE = """\
 <body bgcolor="#ffc34d">
 <h2 align="center">Seach Train</h2>
 
+"""
+
+
+MANAGER_MENU_PAGE = """\
+<ul>
+<li> <a href=/revenue><h3>View revenue report</h3></a>
+<p></p>
+<li> <a href=/pop_route><h3>View popular route report</h3> </a>
+<p></p>
+
+</ul>
 """

@@ -45,7 +45,7 @@ class school_info_page(webapp2.RequestHandler):
         self.db = MySQLdb.connect(host="localhost",    # your host, usually localhost
                      user="root",         # your username
                      passwd="r0cknr0lla",  # your password
-                     db="trainsystem")        # name of the data base
+                     db="phase3")        # name of the data base
         
         self.cur = self.db.cursor()
         self.response.write(ALL_PAGE_HEADER)

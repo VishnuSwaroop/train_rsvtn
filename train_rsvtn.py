@@ -12,7 +12,8 @@ import sqlcommands
 from sqlcommands import *
 
 import json
-
+import update
+from update import *
 
 import urllib
 import time
@@ -39,7 +40,7 @@ class login_page(webapp2.RequestHandler):
         self.db = MySQLdb.connect(host="localhost",    # your host, usually localhost
                              user="root",         # your username
                              passwd="r0cknr0lla",  # your password
-                             db="trainsystem")        # name of the data base
+                             db="phase3")        # name of the data base
         
         self.cur = self.db.cursor()
         self.response.write(ALL_PAGE_HEADER)
@@ -52,7 +53,7 @@ class login_page(webapp2.RequestHandler):
         self.db = MySQLdb.connect(host="localhost",    # your host, usually localhost
                              user="root",         # your username
                              passwd="r0cknr0lla",  # your password
-                             db="trainsystem")        # name of the data base
+                             db="phase3")        # name of the data base
         
         self.cur = self.db.cursor()
         self.response.write(ALL_PAGE_HEADER)
@@ -106,14 +107,16 @@ app = webapp2.WSGIApplication([
     ('/menu',customer_menu_page),
     ('/viewschedule',train_schedule1),
     ('/makereserve',make_reservation),
-    # ('/updatereserve',customer_menu_page),
+    ('/updatereserve',updatereserve),
+    ('/updatereserve2',updatereserve2),
     # ('/cancelreserve',customer_menu_page),
     # ('/givereview',customer_menu_page),
     ('/addschool',school_info_page),
     ('/selectdep',sel_dep_page),
     ('/pngr_info',pngr_info),
     ('/finalreserve',finalreserve),
-    ('/paymentinfo',paymentinfo)
+    ('/paymentinfo',paymentinfo),
+    ('/confirmation', confirmation)
 
     
 ], debug=True)
